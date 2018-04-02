@@ -2,6 +2,9 @@
 # COLOR SECTION ###################################
 #
 
+\set_color "collapsible" "#cd5c5c"
+\set_color "blue" "#0080ff"
+\set_color "green" "#859900"
 \set_color "cursor" "#93a1a1"
 \set_color "background" "#282c34"
 \set_color "foreground" "#abb2bf"
