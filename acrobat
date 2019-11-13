@@ -1,0 +1,44 @@
+#!/bin/bash
+PDFFILE=$1
+FILE=`basename $PDFFILE`
+# RAWFILE=`basename $PDFFILE`
+# FILE=${RAWFILE//\\/}
+osascript <<EOF
+    set theTitle to "$FILE"
+    tell application "System Events"
+         if (exists of application process "Acrobat Reader") is false then
+            tell application "Adobe Acrobat Reader DC" to activate
+         end if
+         tell process "Acrobat Reader"
+              set frontmost to true
+              if window theTitle exists then
+                 tell window theTitle to perform action "AXRaise"
+                 keystroke "n" using {shift down, command down}
+                 keystroke "c" using {command down}
+                 keystroke tab
+                 keystroke return
+                 tell window theTitle to perform action "AXPress" of (get value of attribute "AXCloseButton")
+              else
+                 set the clipboard to "1"
+              end if
+         end tell
+    end tell
+EOF
+
+open -a "Adobe Acrobat Reader DC" $PDFFILE
+
+osascript <<EOF
+    set theTitle to "$FILE"
+    tell application "System Events"
+         tell process "Acrobat Reader"
+              set frontmost to true
+              if window theTitle exists then
+                 tell window theTitle to perform action "AXRaise"
+                 keystroke "n" using {shift down, command down}
+                 keystroke "v" using {command down}
+                 keystroke return
+                 keystroke "2" using {command down}
+              end if
+         end tell
+    end tell
+EOF
