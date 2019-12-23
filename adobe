@@ -6,10 +6,10 @@ FILE=`basename $PDFFILE`
 osascript <<EOF
     set theTitle to "$FILE"
     tell application "System Events"
-         if (exists of application process "AdobeAcrobat") is false then
-            tell application "Adobe Acrobat" to activate
+         if (exists of application process "AdobeReader") is false then
+            tell application "Adobe Acrobat Reader DC" to activate
          end if
-         tell process "AdobeAcrobat"
+         tell process "AdobeReader"
               set frontmost to true
               if window theTitle exists then
                  tell window theTitle to perform action "AXRaise"
@@ -25,12 +25,12 @@ osascript <<EOF
     end tell
 EOF
 
-open -a "Adobe Acrobat" $PDFFILE
+open -a "Adobe Acrobat Reader DC" $PDFFILE
 
 osascript <<EOF
     set theTitle to "$FILE"
     tell application "System Events"
-         tell process "AdobeAcrobat"
+         tell process "AdobeReader"
               set frontmost to true
               if window theTitle exists then
                  tell window theTitle to perform action "AXRaise"
