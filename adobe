@@ -1,39 +1,33 @@
 #!/bin/bash
 PDFFILE=$1
-FILE=`basename $PDFFILE`
-# RAWFILE=`basename $PDFFILE`
-# FILE=${RAWFILE//\\/}
 osascript <<EOF
-    set theTitle to "$FILE"
+    set FilePath to POSIX path of "$PDFFILE"
+    set TheTitle to do shell script "basename " & quoted form of FilePath
     tell application "System Events"
-         if (exists of application process "AdobeReader") is false then
-            tell application "Adobe Acrobat Reader DC" to activate
+         if (exists of application process "Acrobat Reader") is false then
+            do shell script "open -a \"Adobe Acrobat Reader DC\""
          end if
-         tell process "AdobeReader"
+         tell process "Acrobat Reader"
               set frontmost to true
-              if window theTitle exists then
-                 tell window theTitle to perform action "AXRaise"
+              if window TheTitle exists then
+                 tell window TheTitle to perform action "AXRaise"
                  keystroke "n" using {shift down, command down}
                  keystroke "c" using {command down}
                  keystroke tab
                  keystroke return
-                 tell window theTitle to perform action "AXPress" of (get value of attribute "AXCloseButton")
+                 tell window TheTitle to perform action "AXPress" of (get value of attribute "AXCloseButton")
               else
                  set the clipboard to "1"
               end if
          end tell
     end tell
-EOF
-
-open -a "Adobe Acrobat Reader DC" $PDFFILE
-
-osascript <<EOF
-    set theTitle to "$FILE"
+    set Command to "open -a \"Adobe Acrobat Reader DC\" " & quoted form of FilePath
+    do shell script Command
     tell application "System Events"
-         tell process "AdobeReader"
+         tell process "Acrobat Reader"
               set frontmost to true
-              if window theTitle exists then
-                 tell window theTitle to perform action "AXRaise"
+              if window TheTitle exists then
+                 tell window TheTitle to perform action "AXRaise"
                  keystroke "n" using {shift down, command down}
                  keystroke "v" using {command down}
                  keystroke return
