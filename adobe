@@ -1,38 +1,49 @@
 #!/bin/bash
 PDFFILE=$1
 osascript <<EOF
-    set FilePath to POSIX path of "$PDFFILE"
-    set TheTitle to do shell script "basename " & quoted form of FilePath
+    set FilePath to quoted form of POSIX path of "$PDFFILE"
+    set TheTitle to do shell script "basename " & FilePath
+    set NumPages to last word of (do shell script "mdls " & FilePath & " | grep kMDItemNumberOfPages")
+    set FileNotOpened to false
     tell application "System Events"
-         if (exists of application process "Acrobat Reader") is false then
-            do shell script "open -a \"Adobe Acrobat Reader DC\""
-         end if
-         tell process "Acrobat Reader"
-              set frontmost to true
-              if window TheTitle exists then
-                 tell window TheTitle to perform action "AXRaise"
-                 keystroke "n" using {shift down, command down}
-                 keystroke "c" using {command down}
-                 keystroke tab
-                 keystroke return
-                 tell window TheTitle to perform action "AXPress" of (get value of attribute "AXCloseButton")
-              else
-                 set the clipboard to "1"
-              end if
-         end tell
+      if (exists of application process "Acrobat Reader") then
+        tell process "Acrobat Reader"
+          set frontmost to true
+          if window TheTitle exists then
+            tell window TheTitle to perform action "AXRaise"
+            if NumPages is greater than 1 then
+              keystroke "n" using {shift down, command down}
+              keystroke "c" using {command down}
+              keystroke tab
+              keystroke return
+            end if
+            tell window TheTitle to perform action "AXPress" of (get value of attribute "AXCloseButton")
+          else
+            set FileNotOpened to true
+          end if
+        end tell
+      else
+        set FileNotOpened to true
+      end if
     end tell
-    set Command to "open -a \"Adobe Acrobat Reader DC\" " & quoted form of FilePath
-    do shell script Command
+    do shell script "open -a \"Adobe Acrobat Reader DC\" " & FilePath
     tell application "System Events"
-         tell process "Acrobat Reader"
-              set frontmost to true
-              if window TheTitle exists then
-                 tell window TheTitle to perform action "AXRaise"
-                 keystroke "n" using {shift down, command down}
-                 keystroke "v" using {command down}
-                 keystroke return
-                 keystroke "2" using {command down}
-              end if
-         end tell
+      tell process "Acrobat Reader"
+        set frontmost to true
+        if window TheTitle exists then
+          tell window TheTitle to perform action "AXRaise"
+          if NumPages is greater than 1 then
+            if FileNotOpened then
+              set the clipboard to "1"
+            end if
+            keystroke "n" using {shift down, command down}
+            keystroke "v" using {command down}
+            keystroke return
+          end if
+          keystroke "2" using {command down}
+        else
+          display dialog "Cannot open file " & quoted form of TheTitle
+        end if
+      end tell
     end tell
 EOF
