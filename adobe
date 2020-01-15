@@ -1,7 +1,12 @@
 #!/bin/bash
 PDFFILE=$1
 osascript <<EOF
-    set FilePath to quoted form of POSIX path of "$PDFFILE"
+    if character 1 of "$PDFFILE" contains "~" then
+      set PDFFILE to POSIX path of (path to home folder) & text (2 + (offset of "~" in "$PDFFILE")) thru -1 of "$PDFFILE"
+    else
+      set PDFFILE to POSIX path of "$PDFFILE"
+    end if
+    set FilePath to quoted form of PDFFILE
     set TheTitle to do shell script "basename " & FilePath
     set NumPages to last word of (do shell script "mdls " & FilePath & " | grep kMDItemNumberOfPages")
     set FileNotOpened to false
