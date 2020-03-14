@@ -49,6 +49,11 @@ osascript <<EOF
             -- keystroke return
             set value of text field of window "Go To Page" to PageNumber
             click button "OK" of window "Go To Page"
+            if FileNotOpened then
+              if menu item "Previous Page" of menu "Page Navigation" of menu item "Page Navigation" of menu "View" of menu bar item "View" of menu bar 1 exists then
+					      click menu item "Previous Page" of menu "Page Navigation" of menu item "Page Navigation" of menu "View" of menu bar item "View" of menu bar 1
+				      end if
+            end if
           end if
           -- keystroke "2" using {command down}
         else
