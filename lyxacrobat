@@ -7,8 +7,8 @@ osascript <<EOF
     set NumPages to (do shell script "/opt/local/bin/qpdf --show-npages " & FilePath)
     set FileNotOpened to false
     tell application "System Events"
-      if (exists of application process "Acrobat Pro 2017") then
-        tell application process "Acrobat Pro 2017"
+      if (exists of application process "Acrobat Pro DC") then
+        tell application process "Acrobat Pro DC"
           set frontmost to true
           try
             if window TheTitle exists then
@@ -35,7 +35,7 @@ osascript <<EOF
     end tell
     do shell script "open -a \"Adobe Acrobat\" " & FilePath
     tell application "System Events"
-      tell application process "Acrobat Pro 2017"
+      tell application process "Acrobat Pro DC"
         set frontmost to true
         if window TheTitle exists then
           tell window TheTitle to perform action "AXRaise"
@@ -50,8 +50,8 @@ osascript <<EOF
             set value of text field of window "Go To Page" to PageNumber
             click button "OK" of window "Go To Page"
             if FileNotOpened then
-              if menu item "Previous Page" of menu "Page Navigation" of menu item "Page Navigation" of menu "View" of menu bar item "View" of menu bar 1 exists then
-					      click menu item "Previous Page" of menu "Page Navigation" of menu item "Page Navigation" of menu "View" of menu bar item "View" of menu bar 1
+              if (menu item "Previous Page" of menu "Page Navigation" of menu item "Page Navigation" of menu "View" of menu bar item "View" of menu bar 1) exists then
+					      click (menu item "Previous Page" of menu "Page Navigation" of menu item "Page Navigation" of menu "View" of menu bar item "View" of menu bar 1)
 				      end if
             end if
           end if
