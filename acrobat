@@ -7,21 +7,29 @@ osascript <<EOF
       set PDFFILE to POSIX path of "$PDFFILE"
     end if
     set FilePath to quoted form of PDFFILE
-    set TheTitle to do shell script "basename " & FilePath
-    -- set NumPages to last word of (do shell script "mdls " & FilePath & " | grep kMDItemNumberOfPages")
-    set NumPages to (do shell script "/opt/local/bin/qpdf --show-npages " & FilePath)
+    try
+      set TheTitle to (do shell script "basename " & FilePath)
+      set NumPages to (do shell script "/opt/local/bin/qpdf --show-npages " & FilePath)
+      set PageSize to (do shell script "/opt/local/bin/pdfinfo " & FilePath & " | grep \"Page size\" | grep -Eo '[-+]?[0-9]*\\\.?[0-9]+'")
+      set PageWidth to word 1 of PageSize
+      set PageHeight to word 2 of PageSize
+      if PageWidth is less than PageHeight then
+        set LetterSize to true
+      else
+        set LetterSize to false
+      end if
+    on error ErrMsg number ErrNum
+      display dialog ErrMsg & ": code " & ErrNum
+    end try
     set FileNotOpened to false
     tell application "System Events"
-      if (exists of application process "Acrobat Pro 2017") then
-        tell process "Acrobat Pro 2017"
+      if (exists of application process "Acrobat Pro DC") then
+        tell process "Acrobat Pro DC"
           set frontmost to true
           if window TheTitle exists then
             tell window TheTitle to perform action "AXRaise"
             if NumPages is greater than 1 then
               keystroke "n" using {shift down, command down}
-              -- keystroke "c" using {command down}
-              -- keystroke tab
-              -- keystroke return
               set PageNumber to value of text field of window "Go To Page"
               click button "Cancel" of window "Go To Page"
             end if
@@ -36,18 +44,15 @@ osascript <<EOF
     end tell
     do shell script "open -a \"Adobe Acrobat\" " & FilePath
     tell application "System Events"
-      tell process "Acrobat Pro 2017"
+      tell process "Acrobat Pro DC"
         set frontmost to true
         if window TheTitle exists then
           tell window TheTitle to perform action "AXRaise"
           if NumPages is greater than 1 then
             if FileNotOpened then
-              -- set the clipboard to "1"
               set PageNumber to "1"
             end if
             keystroke "n" using {shift down, command down}
-            -- keystroke "v" using {command down}
-            -- keystroke return
             set value of text field of window "Go To Page" to PageNumber
             click button "OK" of window "Go To Page"
             if FileNotOpened then
@@ -56,7 +61,9 @@ osascript <<EOF
 				      end if
             end if
           end if
-          keystroke "2" using {command down}
+          if LetterSize then
+            keystroke "2" using {command down}
+          end if
         else
           display dialog "Cannot open file " & quoted form of TheTitle
         end if

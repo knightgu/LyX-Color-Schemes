@@ -27,9 +27,6 @@ osascript <<EOF
               tell window TheTitle to perform action "AXRaise"
               if NumPages is greater than 1 then
                 keystroke "n" using {shift down, command down}
-                -- keystroke "c" using {command down}
-                -- keystroke tab
-                -- keystroke return
                 set PageNumber to value of text field of window "Go To Page"
                 click button "Cancel" of window "Go To Page"
               end if
@@ -53,12 +50,9 @@ osascript <<EOF
           tell window TheTitle to perform action "AXRaise"
           if NumPages is greater than 1 then
             if FileNotOpened then
-              -- set the clipboard to "1"
               set PageNumber to "1"
             end if
             keystroke "n" using {shift down, command down}
-            -- keystroke "v" using {command down}
-            -- keystroke return
             set value of text field of window "Go To Page" to PageNumber
             click button "OK" of window "Go To Page"
             if FileNotOpened then
