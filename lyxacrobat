@@ -3,8 +3,20 @@ FILE=$1
 PDFFILE="$(pwd)/${FILE}"
 osascript <<EOF
     set FilePath to quoted form of POSIX path of "$PDFFILE"
-    set TheTitle to do shell script "basename " & FilePath
-    set NumPages to (do shell script "/opt/local/bin/qpdf --show-npages " & FilePath)
+    try
+      set TheTitle to (do shell script "basename " & FilePath)
+      set NumPages to (do shell script "/opt/local/bin/qpdf --show-npages " & FilePath)
+      set PageSize to (do shell script "/opt/local/bin/pdfinfo " & FilePath & " | grep \"Page size\" | grep -Eo '[-+]?[0-9]*\\\.?[0-9]+'")
+      set PageWidth to word 1 of PageSize
+      set PageHeight to word 2 of PageSize
+      if PageWidth is less than PageHeight then
+        set LetterSize to true
+      else
+        set LetterSize to false
+      end if
+    on error ErrMsg number ErrNum
+      display dialog ErrMsg & ": code " & ErrNum
+    end try
     set FileNotOpened to false
     tell application "System Events"
       if (exists of application process "Acrobat Pro DC") then
@@ -55,7 +67,9 @@ osascript <<EOF
 				      end if
             end if
           end if
-          -- keystroke "2" using {command down}
+          if LetterSize then
+            keystroke "2" using {command down}
+          end if
         else
           display dialog "Cannot open file " & TheTitle
         end if
