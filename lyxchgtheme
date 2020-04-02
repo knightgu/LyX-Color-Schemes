@@ -1,0 +1,33 @@
+osascript <<EOF
+  set DarkModeFile to "~/Documents/github/LyX-Color-Schemes/preferences-dark-mode"
+  set LitModeFile to "~/Documents/github/LyX-Color-Schemes/preferences-light-mode"
+  set LyXPrefFile to "~/Library/ApplicationSupport/LyX-2.3/preferences"
+  try
+    set TheResult to display dialog ¬
+      "Switch LyX to dark or light mode?" buttons {"Cancel", "Light", "Dark"} ¬
+      default button "Dark" cancel button "Cancel"
+    set DarkMode to button returned of TheResult is "Dark"
+  on error ErrorMsg number ErrorNumber
+    if ErrorNumber is -128 then
+      return -- IF USER CANCELS, EXIT SCRIPT
+    else
+      error ErrorMsg & ": error code " & ErrorNumber
+    end if
+  end try
+  tell application "LyX"
+    if it is running then
+      quit
+      delay 5
+    end if
+  end tell
+  if DarkMode then
+    do shell script "cp " & DarkModeFile & " " & LyXPrefFile
+  else
+    do shell script "cp " & LitModeFile & " " & LyXPrefFile
+  end if
+  tell application "LyX"
+    if it is not running then
+      activate
+    end if
+  end tell
+EOF
