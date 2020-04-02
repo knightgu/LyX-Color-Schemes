@@ -1,6 +1,6 @@
 osascript <<EOF
-  set DarkModeFile to "~/Documents/github/LyX-Color-Schemes/preferences-dark-mode"
-  set LitModeFile to "~/Documents/github/LyX-Color-Schemes/preferences-light-mode"
+  set DarkModeFile to "~/Documents/github/LyX-config/preferences-dark-mode"
+  set LitModeFile to "~/Documents/github/LyX-config/preferences-light-mode"
   set LyXPrefFile to "~/Library/ApplicationSupport/LyX-2.3/preferences"
   try
     set TheResult to display dialog ¬

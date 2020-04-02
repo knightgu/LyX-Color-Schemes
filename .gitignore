@@ -1,0 +1,71 @@
+# Directories
+Refereces/
+
+# MACOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Compiled
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# LaTeX
+*.log
+*.aux
+*.pdf
+*.synctex.gz
+*.bbl
+*.blg
+*.xml
+*.sty
+*blx.bib
+*.bst
+*.cls
+*.thm
+*.out
+*.fdb_latexmk
+*.fls
+
+# LyX
+*.lyx~
+
+# Emacs
+*[#]*[#]
+*[#]*
+_region_.tex
+
+# Web 
+*.css
+*.map
+*.ttf
+*.eot
+*.svg
+*.woff
+*.woff2
+*.js
+*.jpg
+*.epub
+*.dropbox
+~$*.xlsx
+
+# Rstudio
+*.Rhistory
+.Rproj.user
+
+# MicroSoft
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx

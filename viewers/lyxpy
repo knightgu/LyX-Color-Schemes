@@ -15,5 +15,5 @@ if not os.path.isfile(pdf_file):
     sys.exit(1)
 
 # Notwithstanding the previous, start evince and open the PDF
-vproc = Popen(['lyxadobe', pdf_file])
+vproc = Popen(['lyxview', pdf_file])
 vproc.wait()
