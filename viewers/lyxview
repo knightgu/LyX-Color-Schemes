@@ -1,6 +1,0 @@
-#!/bin/bash
-if hash lyxadobe 2>/dev/null; then
-    lyxadobe "$@"
-else
-    lyxacrobat "$@"
-fi

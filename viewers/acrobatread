@@ -7,20 +7,20 @@ else
     PDFFILE=${1}
 fi
 
-# SELECT ADOBE READER FOR PDF DOCUMENTS
-if [ -n "$ACROREADER" ]
-then
-    case "$ACROREADER" in
-        *reader*) ADOBEAPP="Reader";;
-        *acrobat*) ADOBEAPP="Acrobat";;
-    esac
-else
-    ADOBEAPP="Acrobat"
-fi
-
 osascript <<EOF
-  set AcroReader to "$ADOBEAPP"
-  if ((AcroReader as string) is equal to "Reader") then
+  try
+    tell application "Finder" to get application file id "com.adobe.Reader"
+    set AcroReader to "Reader"
+  on error
+    try
+      tell application "Finder" to get ¬
+        application file id "com.adobe.Acrobat.Pro"
+      set AcroReader to "Acrobat"
+    on error
+      return
+    end try
+  end try
+  if (AcroReader is equal to "Reader") then
     set ADOBEAPP to "Adobe Acrobat Reader DC"
     set ADOBEPROC to "Acrobat Reader"
   else
