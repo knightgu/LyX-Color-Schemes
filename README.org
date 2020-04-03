@@ -1,12 +1,15 @@
 # Created 2017-09-17 Sun 17:36
-#+TITLE: Color Schemes for LyX
+#+TITLE: Configurations for LyX
 #+AUTHOR: Joon Ro
-* List of color schemes
-- [[http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/][monokai]] (Thanks to [[https://github.com/chemscobra][Gustavo Leon]])
-- [[https://github.com/atom/one-dark-syntax][One Dark]]
-- [[http://ethanschoonover.com/solarized][Solarized]] Light & Dark
-- [[https://github.com/ChrisKempson/Tomorrow-Theme][Tomorrow]] & Night
-* How to Install
-- Replace =COLOR SECTION= part of the =preferences= file which is located at
-  the [[http://wiki.lyx.org/LyX/UserDir][LyX user directory]] with the
-  contents of one of the color scheme file.
+* Color schemes
+** List
+   - [[http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/][Monokai]] (Thanks to [[https://github.com/chemscobra][Gustavo Leon]])
+   - [[https://github.com/atom/one-dark-syntax][One Dark]]
+   - [[http://ethanschoonover.com/solarized][Solarized]] Light & Dark
+   - [[https://github.com/ChrisKempson/Tomorrow-Theme][Tomorrow]] & Night
+** How to Install
+ - Replace =COLOR SECTION= part of the =preferences= file which is located at the
+   [[http://wiki.lyx.org/LyX/UserDir][LyX user directory]] with the contents of one of the color scheme file. Install
+   or link the ~lyxchgtheme~ command to =/usr/local/bin= and run it to switch
+   between LyX's default light theme and the =One Dark= theme. Alternatively,
+   run the ~LyXchgtheme.scpt~ AppleScript in =Script Editor= on MAC.

@@ -1,0 +1,112 @@
+#!/bin/bash
+# HANDLE BOTH RELATIVE & ABSOLUTE PATHS
+if [[ $1 != /* ]]
+then
+    PDFFILE="$(pwd)/${1}"
+else
+    PDFFILE=${1}
+fi
+
+# SELECT ADOBE READER FOR PDF DOCUMENTS
+if [ -n "$ACROREADER" ]
+then
+    case "$ACROREADER" in
+        *reader*) ADOBEAPP="Reader";;
+        *acrobat*) ADOBEAPP="Acrobat";;
+    esac
+else
+    ADOBEAPP="Acrobat"
+fi
+
+osascript <<EOF
+  set AcroReader to "$ADOBEAPP"
+  if ((AcroReader as string) is equal to "Reader") then
+    set ADOBEAPP to "Adobe Acrobat Reader DC"
+    set ADOBEPROC to "Acrobat Reader"
+  else
+    set ADOBEAPP to "Adobe Acrobat"
+    set ADOBEPROC to "Acrobat Pro DC"
+  end if
+  set PDFFILE to quoted form of POSIX path of "$PDFFILE"
+  set Cmd1 to "/usr/bin/basename " & PDFFILE
+  set Cmd2 to "/opt/local/bin/qpdf --show-npages " & PDFFILE
+  set Cmd3 to "/opt/local/bin/pdfinfo " & PDFFILE & ¬
+    " | grep \"Page size\" | grep -Eo '[-+]?[0-9]*\\\.?[0-9]+'"
+  set Cmd4 to "open -a \"" & ADOBEAPP & "\" " & PDFFILE
+  try
+    set DocName to (do shell script Cmd1)
+    set NumPages to (do shell script Cmd2)
+    -- CHECK IF DOCUMENT IS OF LETTER/BEAMER SIZE
+    set PageSize to (do shell script Cmd3) -- width * height
+    if (word 1 of PageSize) is less than (word 2 of PageSize) then
+      set LetterSize to true
+    else
+      set LetterSize to false
+    end if
+  on error ErrMsg number ErrNum
+    display dialog ErrMsg & ": code " & ErrNum
+  end try
+  set FileNotOpened to false
+  tell application "System Events"
+    if (exists of application process ADOBEPROC) then
+      tell application process ADOBEPROC
+        set frontmost to true
+        try
+          if window DocName exists then
+            tell window DocName to perform action "AXRaise"
+            -- RECORD CURRENT PAGE NUMBER OF THE DOCUMENT HAS MULTIPLE PAGES
+            if NumPages is greater than 1 then
+              keystroke "n" using {shift down, command down}
+              set PageNumber to value of text field of window "Go To Page"
+              click button "Cancel" of window "Go To Page"
+            end if
+            -- CLOSE CURRENT DOCUMENT
+            tell window DocName to perform action "AXPress" ¬
+              of (get value of attribute "AXCloseButton")
+          else
+            set FileNotOpened to true
+          end if
+        on error ErrMsg number ErrNum
+          display dialog ErrMsg & ": code " & ErrNum
+        end try
+      end tell
+    else
+      set FileNotOpened to true
+    end if
+  end tell
+  -- REOPEN THE DOCUMENT
+  do shell script Cmd4
+  tell application "System Events"
+    tell application process ADOBEPROC
+      set frontmost to true
+      if window DocName exists then
+        tell window DocName to perform action "AXRaise"
+        -- NAVIGATE THE DOCUMENT TO THE RECORDED PAGE
+        if NumPages is greater than 1 then
+          if FileNotOpened then
+            set PageNumber to "1"
+          end if
+          keystroke "n" using {shift down, command down}
+          set value of text field of window "Go To Page" to PageNumber
+          click button "OK" of window "Go To Page"
+          -- GO TO PAGE ZERO IF IT EXISTS
+          if FileNotOpened then
+            if (menu item "Previous Page" of menu "Page Navigation" ¬
+                of menu item "Page Navigation" of menu "View" of ¬
+                menu bar item "View" of menu bar 1) exists then
+              click (menu item "Previous Page" of menu "Page Navigation" ¬
+                     of menu item "Page Navigation" of menu "View" ¬
+                     of menu bar item "View" of menu bar 1)
+            end if
+          end if
+        end if
+        -- FIT WIDTH/HEIGHT IF THE DOCUMENT IS OF LETTER/BEAMER SIZE
+        if LetterSize then
+          keystroke "2" using {command down}
+        end if
+      else
+        display dialog "Cannot open document " & DocName
+      end if
+    end tell
+  end tell
+EOF

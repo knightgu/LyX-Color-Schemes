@@ -67,7 +67,7 @@ Format 24
 #
 
 \format "og" "graffle" "OmniGraffle" "" "" "auto" "vector" ""
-\format "pdf2" "pdf" "PDF (pdflatex)" "F" "lyxview" "" "document,vector,menu=export" ""
+\format "pdf2" "pdf" "PDF (pdflatex)" "F" "acroread" "" "document,vector,menu=export" ""
 
 #
 # CONVERTERS SECTION ##########################
