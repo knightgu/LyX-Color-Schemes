@@ -1,3 +1,4 @@
+#!/bin/bash
 osascript <<EOF
   set DarkModeFile to "~/Documents/github/LyX-config/preferences-dark-mode"
   set LitModeFile to "~/Documents/github/LyX-config/preferences-light-mode"

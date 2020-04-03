@@ -1,4 +1,4 @@
-# LyX 2.3.4 generated this file. If you want to make your own
+# LyX 2.3.4.2 generated this file. If you want to make your own
 # modifications you should do them from inside LyX and save.
 
 Format 24
@@ -25,6 +25,7 @@ Format 24
 # COLOR SECTION ###################################
 #
 
+
 #
 # PRINTER SECTION ###################################
 #
@@ -49,6 +50,7 @@ Format 24
 # SPELLCHECKER SECTION ##############################
 #
 
+
 #
 # LANGUAGE SUPPORT SECTION ##########################
 #
@@ -64,13 +66,18 @@ Format 24
 # FORMATS SECTION ##########################
 #
 
+\format "og" "graffle" "OmniGraffle" "" "" "auto" "vector" ""
 \format "pdf2" "pdf" "PDF (pdflatex)" "F" "lyxview" "" "document,vector,menu=export" ""
 
 #
 # CONVERTERS SECTION ##########################
 #
 
+\converter "og" "pdf" "ogexport $$i $$o pdf" ""
+\converter "og" "eps" "ogexport $$i $$o eps" ""
+\converter "og" "png" "ogexport $$i $$o png" ""
 
 #
 # COPIERS SECTION ##########################
 #
+
