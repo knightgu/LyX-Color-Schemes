@@ -14,6 +14,6 @@ pdf_file = os.path.abspath(sys.argv[1])
 if not os.path.isfile(pdf_file):
     sys.exit(1)
 
-# Notwithstanding the previous, start evince and open the PDF
+# Notwithstanding the previous, start viewer and open the PDF
 vproc = Popen(['acrobatread', pdf_file])
 vproc.wait()

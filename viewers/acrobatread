@@ -54,7 +54,7 @@ osascript <<EOF
         try
           if window DocName exists then
             tell window DocName to perform action "AXRaise"
-            -- RECORD CURRENT PAGE NUMBER OF THE DOCUMENT HAS MULTIPLE PAGES
+            -- RECORD CURRENT PAGE NUMBER IF THE DOCUMENT HAS MULTIPLE PAGES
             if NumPages is greater than 1 then
               keystroke "n" using {shift down, command down}
               set PageNumber to value of text field of window "Go To Page"
