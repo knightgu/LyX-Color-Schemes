@@ -4,9 +4,9 @@ osascript <<EOF
   set LitModeFile to "~/Documents/github/LyX-config/preferences-light-mode"
   set LyXPrefFile to "~/Library/ApplicationSupport/LyX-2.3/preferences"
   try
-    set TheResult to display dialog ¬
+    set TheResult to (display dialog ¬
       "Switch LyX to dark or light mode?" buttons {"Cancel", "Light", "Dark"} ¬
-      default button "Dark" cancel button "Cancel"
+      default button "Dark" cancel button "Cancel" with title "LyX")
     set DarkMode to button returned of TheResult is "Dark"
   on error ErrorMsg number ErrorNumber
     if ErrorNumber is -128 then

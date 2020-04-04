@@ -1,7 +1,7 @@
 # Created 2017-09-17 Sun 17:36
 #+TITLE: Configurations for LyX
 #+AUTHOR: Joon Ro
-* Color schemes
+* Color themes
 ** List
    - [[http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/][Monokai]] (Thanks to [[https://github.com/chemscobra][Gustavo Leon]])
    - [[https://github.com/atom/one-dark-syntax][One Dark]]
@@ -12,4 +12,4 @@
    [[http://wiki.lyx.org/LyX/UserDir][LyX user directory]] with the contents of one of the color scheme file. Install
    or link the ~lyxchgtheme~ command to =/usr/local/bin= and run it to switch
    between LyX's default light theme and the =One Dark= theme. Alternatively,
-   run the ~LyXchgtheme.scpt~ AppleScript in =Script Editor= on MAC.
+   run the ~LyXchgtheme.scpt~ script in Script Editor on MAC.
