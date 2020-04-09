@@ -29,6 +29,21 @@ osascript <<EOF
   tell application "LyX"
     if it is not running then
       activate
+      delay 3
     end if
+  end tell
+
+  tell application "System Events"
+    tell process "lyx"
+      set frontmost to true
+      try
+        set ROD to menu item 1 of menu "Open Recent" ¬
+          of menu item "Open Recent" of menu "File" ¬
+          of menu bar item "File" of menu bar 1
+        click ROD
+      on error
+        display dialog "No recently opened document!"
+      end try
+    end tell
   end tell
 EOF
